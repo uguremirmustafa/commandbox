@@ -1,0 +1,37 @@
+.commandBox {
+  --bodyBg: #333334;
+  --headerBg: rgb(36, 34, 34);
+  --footerBg: var(--headerBg);
+  --spacing: 0.75rem;
+  z-index: 2;
+  width: 300px;
+  padding: 0px;
+  background-color: var(--bodyBg);
+  &::backdrop {
+    background-color: var(--headerBg);
+    opacity: 0.3;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing);
+    align-items: center;
+    background-color: var(--headerBg);
+    .title {
+      padding: 0px;
+      margin: 0px;
+      font-size: 1.25rem;
+    }
+  }
+  .body {
+    padding: var(--spacing);
+  }
+  .footer {
+    padding: var(--spacing);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    background-color: var(--footerBg);
+  }
+}
