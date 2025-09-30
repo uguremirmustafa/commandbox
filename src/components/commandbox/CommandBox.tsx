@@ -10,12 +10,14 @@ interface IProps {
   id: string;
   title: string;
   items: Item[];
+  onItemClick: (item: Item) => void;
 }
 
 function CommandBox(props: IProps) {
-  const { title, id, items } = props;
+  const { title, id, items, onItemClick } = props;
 
   const ref = useRef<HTMLDialogElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const [search, setSearch] = useState('');
 
@@ -32,6 +34,33 @@ function CommandBox(props: IProps) {
     [search, items]
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
+    const items =
+      listRef.current?.querySelectorAll<HTMLElement>('li[tabindex]');
+    if (!items || items.length === 0) return;
+
+    const activeIndex = Array.from(items).findIndex(
+      (el) => el === document.activeElement
+    );
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = items[(activeIndex + 1) % items.length];
+      next.focus();
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = items[(activeIndex - 1 + items.length) % items.length];
+      prev.focus();
+    }
+  };
+
+  function clickItemAndClose(item: Item) {
+    ref.current?.close();
+    onItemClick(item);
+  }
+
   return (
     <dialog ref={ref} className="commandBox" id={id}>
       <div className="header">
@@ -44,11 +73,24 @@ function CommandBox(props: IProps) {
           id="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          autoFocus
         />
-        <ul>
+        <ul ref={listRef} onKeyDown={handleKeyDown}>
           {filteredItems.map((x) => {
-            return <li key={x.id}>{x.content}</li>;
+            return (
+              <li
+                tabIndex={0}
+                key={x.id}
+                onClick={() => clickItemAndClose(x)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    clickItemAndClose(x);
+                  }
+                }}
+              >
+                {x.content}
+              </li>
+            );
           })}
         </ul>
       </div>

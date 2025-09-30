@@ -3,10 +3,20 @@
   --headerBg: rgb(36, 34, 34);
   --footerBg: var(--headerBg);
   --spacing: 0.75rem;
+  --inputBg: rgb(53, 53, 86);
+  --inputFocusBg: #44446a;
+  --activeAccent: #6366f1;
+  --br: 4px;
+  --listHeight: 200px;
   z-index: 2;
-  width: 300px;
+  width: 400px;
   padding: 0px;
   background-color: var(--bodyBg);
+  border-radius: var(--br);
+  overflow: hidden;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: 0 0 0 2px var(--activeAccent);
   &::backdrop {
     background-color: var(--headerBg);
     opacity: 0.3;
@@ -25,6 +35,51 @@
   }
   .body {
     padding: var(--spacing);
+    input {
+      background-color: var(--inputBg);
+      width: 100%;
+      border-radius: var(--br);
+      border: none;
+      outline: none;
+      color: #fff;
+      padding: var(--spacing);
+      font-size: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: box-shadow 0.2s;
+      &:focus {
+        box-shadow: 0 0 0 2px var(--activeAccent);
+        background-color: var(--inputFocusBg);
+      }
+    }
+    ul {
+      margin: 0px;
+      margin-top: var(--spacing);
+      text-align: left;
+      padding: calc(var(--spacing) / 2);
+      height: 100%;
+      max-height: var(--listHeight);
+      min-height: var(--listHeight);
+      overflow-y: auto;
+
+      li {
+        list-style: none;
+
+        outline: none;
+        margin-bottom: var(--spacing);
+        padding: calc(var(--spacing) / 2) var(--spacing);
+        border-radius: var(--br);
+        background-color: var(--headerBg);
+        display: block;
+        border: none;
+        cursor: pointer;
+        &:focus,
+        &:hover,
+        &:active {
+          outline: 2px solid var(--activeAccent);
+          transition: outline ease 0.1s;
+        }
+      }
+    }
   }
   .footer {
     padding: var(--spacing);
